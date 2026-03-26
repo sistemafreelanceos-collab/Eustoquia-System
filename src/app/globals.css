@@ -115,3 +115,23 @@ body {
 .animate-pulse-custom {
   animation: pulse 2s infinite;
 }
+
+/* --- ESTILOS DEL NODO DE ACCIÓN (n8n / Webhooks) --- */
+.react-flow__node-action, .custom-action-node {
+  background: rgba(15, 15, 22, 0.95) !important;
+  border: 1.5px solid rgba(255, 71, 87, 0.4) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+  border-radius: 16px !important;
+  z-index: 20 !important;
+  transition: all 0.2s ease;
+}
+
+.custom-action-node.selected {
+  border-color: #FF4757 !important;
+  box-shadow: 0 0 0 1.5px rgba(255, 71, 87, 0.4), 0 8px 32px rgba(255, 71, 87, 0.25) !important;
+}
+
+.custom-action-node .react-flow__handle {
+  border-color: #FF4757 !important;
+  background: transparent !important;
+}

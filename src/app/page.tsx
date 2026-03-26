@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { LayoutGrid, Sparkles, FolderOpen, MousePointer2, Type, Image as ImageIcon, Link as LinkIcon, Mic, FileText, Music, Play } from 'lucide-react';
+import { LayoutGrid, Sparkles, FolderOpen, MousePointer2, Type, Image as ImageIcon, Link as LinkIcon, Mic, FileText, Music, Play, Send } from 'lucide-react';
 
 import { useBoardStore } from '@/store/boardStore';
 
@@ -134,9 +134,15 @@ export default function Home() {
       newNode.style = { width: 400, height: 400 };
       newNode.data = { contextTabs: [], messages: [] };
       newNode.zIndex = 50;
+    } else if (type === 'action') {
+      newNode.type = 'action';
+      newNode.style = { width: 280, height: 160 };
+      newNode.data = { type: 'action', title: 'Enviar a n8n', url: '', boardId: activeBoardId };
+      newNode.className = 'custom-action-node';
+      newNode.zIndex = 20;
     } else {
       newNode.type = 'basic';
-      newNode.data.type = type; // youtube, mic, etc.
+      newNode.data.type = type;
     }
 
     addNode(newNode);
@@ -225,6 +231,9 @@ export default function Home() {
           <ToolbarButton icon={<FileText size={16} />} label="Doc" onClick={() => handleAddNode('doc')} />
           <ToolbarButton icon={<Type size={16} />} label="Nota" onClick={() => handleAddNode('note')} />
           <ToolbarButton icon={<LinkIcon size={16} />} label="Link" onClick={() => handleAddNode('link')} />
+
+          <div className="w-8 h-[1px] bg-[#252535] my-1.5" />
+          <ToolbarButton icon={<Send size={15} />} label="Webhook" onClick={() => handleAddNode('action')} />
 
           <div className="flex-1" />
 

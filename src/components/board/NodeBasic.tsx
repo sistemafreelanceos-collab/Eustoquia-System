@@ -98,6 +98,41 @@ const NodeBasic = ({ id, data, selected }: NodeProps) => {
     }
   };
 
+  const handleScrape = async () => {
+    if (!data.url) return;
+    setLoading(true);
+    try {
+      const res = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: data.url })
+      });
+      const result = await res.json();
+      
+      if (result.text) {
+        const updatedNode = nodes.find(n => n.id === id);
+        if (updatedNode) {
+          syncNode({ 
+            ...updatedNode, 
+            data: { 
+              ...updatedNode.data, 
+              fullContent: result.text,
+              meta: `Web extraída (${result.length} caracteres). Lista para Claude.`
+            } 
+          });
+        }
+        alert('Web analizada con éxito. Conéctala al Chat IA.');
+      } else {
+        alert(result.error || 'Error al procesar la web');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Error conectando con el scraper');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const updateUrl = (newUrl: string) => {
     const updatedNode = nodes.find(n => n.id === id);
     if (updatedNode) {
@@ -176,6 +211,17 @@ const NodeBasic = ({ id, data, selected }: NodeProps) => {
           >
             {loading ? <Loader2 size={10} className="animate-spin" /> : <FileText size={10} />}
             {loading ? 'Procesando...' : 'Analizar Documento'}
+          </button>
+        )}
+
+        {data.type === 'link' && data.url && (
+          <button 
+            onClick={handleScrape}
+            disabled={loading}
+            className="mt-2 w-full flex items-center justify-center gap-1.5 px-2 py-1.5 rounded bg-[#00D68F]/15 border border-[#00D68F]/30 text-[#00D68F] text-[9px] font-bold uppercase tracking-wider hover:bg-[#00D68F]/25 transition-all disabled:opacity-50"
+          >
+            {loading ? <Loader2 size={10} className="animate-spin" /> : <LinkIcon size={10} />}
+            {loading ? 'Leyendo web...' : 'Extraer Texto'}
           </button>
         )}
       </div>

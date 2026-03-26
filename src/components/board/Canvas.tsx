@@ -10,11 +10,15 @@ import NodeGroup from './NodeGroup';
 import NodeBasic from './NodeBasic';
 import NodeChat from './NodeChat';
 
+import NodeAction from './NodeAction';
+
 const DEFAULT_NODE_TYPES = {
   group: NodeGroup as any,
   basic: NodeBasic as any,
   chat: NodeChat as any,
+  action: NodeAction as any,
 };
+
 
 export default function Canvas() {
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect, syncNode, setNodes, addNode, userId, activeBoardId } = useBoardStore();
@@ -23,7 +27,13 @@ export default function Canvas() {
   const nodeTypes = useMemo(() => DEFAULT_NODE_TYPES, []);
 
   const onNodeDragStop = useCallback((_: any, node: RFNode) => {
+    if (!node || !node.type) return; // Guard for undefined nodes
     if (node.type === 'group') {
+      syncNode(node);
+      return;
+    }
+    // Action nodes don't participate in group parenting
+    if (node.type === 'action') {
       syncNode(node);
       return;
     }
