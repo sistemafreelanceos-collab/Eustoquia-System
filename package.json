@@ -9,16 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
     "@reactflow/node-resizer": "^2.2.14",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "clsx": "latest",
     "lucide-react": "latest",
+    "mammoth": "^1.12.0",
     "next": "latest",
+    "pdf-parse": "^2.4.5",
     "react": "latest",
     "react-dom": "latest",
     "reactflow": "latest",
     "tailwind-merge": "latest",
+    "youtube-transcript": "^1.3.0",
     "zustand": "latest"
   },
   "devDependencies": {
